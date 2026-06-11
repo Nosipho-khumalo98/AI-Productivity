@@ -21,6 +21,9 @@ export function AppLayout({ children }: { children: ReactNode }) {
           collapsed={collapsed}
         />
         <main className="flex-1 min-w-0 p-4 md:p-8">{children}</main>
+        <footer className="border-t border-border px-4 md:px-8 py-3 text-[11px] text-muted-foreground text-center">
+          AI-generated content may require human review.
+        </footer>
       </div>
       <ChatAssistant />
     </div>
