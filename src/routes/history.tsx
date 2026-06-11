@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { Bookmark, Mail, FileText, ListTodo, Trash2, Copy, Search } from "lucide-react";
+import { Bookmark, Mail, FileText, ListTodo, Trash2, Copy, Search, Search as SearchIcon } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
 
@@ -38,7 +38,7 @@ export function HistoryView({ title, subtitle, savedOnly = false }: { title: str
             className="h-10 w-full rounded-md border border-border bg-card pl-9 pr-3 text-sm outline-none focus:border-primary/60"
           />
         </div>
-        {(["all", "email", "summary", "plan"] as const).map((f) => (
+        {(["all", "email", "summary", "plan", "research"] as const).map((f) => (
           <button
             key={f}
             onClick={() => setFilter(f)}
@@ -66,7 +66,7 @@ export function HistoryView({ title, subtitle, savedOnly = false }: { title: str
         <div className="grid gap-6 lg:grid-cols-[1fr_1.3fr]">
           <div className="space-y-2 max-h-[75vh] overflow-y-auto pr-1">
             {list.map((i) => {
-              const Icon = i.type === "email" ? Mail : i.type === "summary" ? FileText : ListTodo;
+              const Icon = i.type === "email" ? Mail : i.type === "summary" ? FileText : i.type === "research" ? SearchIcon : ListTodo;
               const active = selected?.id === i.id;
               return (
                 <button
