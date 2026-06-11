@@ -29,7 +29,7 @@ export function useLocalStorage<T>(key: string, initial: T) {
 
 export type HistoryItem = {
   id: string;
-  type: "email" | "summary" | "plan";
+  type: "email" | "summary" | "plan" | "research";
   title: string;
   content: string;
   meta?: Record<string, string>;
@@ -44,9 +44,10 @@ export type Stats = {
   emails: number;
   summaries: number;
   plans: number;
+  research: number;
 };
 
-export const emptyStats: Stats = { emails: 0, summaries: 0, plans: 0 };
+export const emptyStats: Stats = { emails: 0, summaries: 0, plans: 0, research: 0 };
 
 export function addHistoryItem(item: HistoryItem) {
   if (typeof window === "undefined") return;
@@ -60,6 +61,7 @@ export function addHistoryItem(item: HistoryItem) {
     if (item.type === "email") stats.emails++;
     else if (item.type === "summary") stats.summaries++;
     else if (item.type === "plan") stats.plans++;
+    else if (item.type === "research") stats.research = (stats.research || 0) + 1;
     localStorage.setItem(STATS_KEY, JSON.stringify(stats));
     window.dispatchEvent(new Event("wai:history-updated"));
   } catch {

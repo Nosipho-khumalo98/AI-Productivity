@@ -8,6 +8,7 @@ import {
   Clock,
   ArrowRight,
   Zap,
+  Search,
 } from "lucide-react";
 import { useHistory, useStats } from "@/lib/storage";
 
@@ -16,12 +17,13 @@ export const Route = createFileRoute("/")({ component: Dashboard });
 function Dashboard() {
   const stats = useStats();
   const history = useHistory();
-  const productivity = Math.min(100, stats.emails * 5 + stats.summaries * 8 + stats.plans * 10);
+  const productivity = Math.min(100, stats.emails * 5 + stats.summaries * 8 + stats.plans * 10 + (stats.research || 0) * 6);
 
   const cards = [
     { label: "Emails Generated", value: stats.emails, icon: Mail, color: "from-blue-500/15 to-blue-500/5", iconColor: "text-blue-500" },
     { label: "Notes Summarized", value: stats.summaries, icon: FileText, color: "from-teal-500/15 to-teal-500/5", iconColor: "text-teal-500" },
     { label: "Tasks Planned", value: stats.plans, icon: ListTodo, color: "from-violet-500/15 to-violet-500/5", iconColor: "text-violet-500" },
+    { label: "Research Briefs", value: stats.research || 0, icon: Search, color: "from-amber-500/15 to-amber-500/5", iconColor: "text-amber-500" },
     { label: "Productivity Score", value: `${productivity}%`, icon: TrendingUp, color: "from-emerald-500/15 to-emerald-500/5", iconColor: "text-emerald-500" },
   ];
 
@@ -29,6 +31,7 @@ function Dashboard() {
     { to: "/email", label: "New Email", desc: "Draft a professional email in seconds", icon: Mail },
     { to: "/meetings", label: "Summarize Notes", desc: "Turn raw notes into action items", icon: FileText },
     { to: "/tasks", label: "Create Plan", desc: "Prioritize your day with AI", icon: ListTodo },
+    { to: "/research", label: "Run Research", desc: "Get a structured briefing on any topic", icon: Search },
   ] as const;
 
   return (
@@ -104,7 +107,7 @@ function Dashboard() {
             {history.slice(0, 5).map((item) => (
               <div key={item.id} className="flex items-start gap-3 rounded-xl border border-border bg-card p-4">
                 <div className="grid h-9 w-9 shrink-0 place-items-center rounded-lg bg-primary/10 text-primary">
-                  {item.type === "email" ? <Mail className="h-4 w-4" /> : item.type === "summary" ? <FileText className="h-4 w-4" /> : <ListTodo className="h-4 w-4" />}
+                  {item.type === "email" ? <Mail className="h-4 w-4" /> : item.type === "summary" ? <FileText className="h-4 w-4" /> : item.type === "research" ? <Search className="h-4 w-4" /> : <ListTodo className="h-4 w-4" />}
                 </div>
                 <div className="min-w-0 flex-1">
                   <p className="truncate font-medium text-sm">{item.title}</p>

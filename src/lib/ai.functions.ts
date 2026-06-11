@@ -192,3 +192,60 @@ List tasks under these four buckets:
     });
     return { plan: text };
   });
+
+/* ---------------- Research Assistant ---------------- */
+
+const ResearchInput = z.object({
+  topic: z.string().min(3),
+  focus: z.string().optional().default(""),
+  depth: z.enum(["brief", "standard", "deep"]).default("standard"),
+});
+
+export const researchTopic = createServerFn({ method: "POST" })
+  .inputValidator((input: unknown) => ResearchInput.parse(input))
+  .handler(async ({ data }) => {
+    const gateway = getGateway();
+    const depthGuide =
+      data.depth === "brief"
+        ? "concise overview (~250 words)"
+        : data.depth === "deep"
+          ? "in-depth analysis (~800 words)"
+          : "balanced briefing (~450 words)";
+
+    const prompt = `You are a senior workplace research analyst. Produce a structured research briefing.
+
+Topic: ${data.topic}
+Focus area / angle: ${data.focus || "general professional context"}
+Depth: ${depthGuide}
+
+Return Markdown with these exact headings:
+
+## TL;DR
+2-3 sentence executive summary.
+
+## Key Insights
+- 5-7 sharp, non-obvious bullet points
+
+## Background & Context
+1-2 short paragraphs.
+
+## Opportunities
+- bullet
+
+## Risks & Considerations
+- bullet
+
+## Recommended Next Steps
+- [ ] actionable step
+
+## Suggested Sources to Verify
+- credible source category or query (note: model cannot browse — these are suggestions for the human to verify)
+
+Tone: clear, professional, neutral. Avoid speculation; flag uncertainty when relevant.`;
+
+    const { text } = await generateText({
+      model: gateway(MODEL),
+      prompt,
+    });
+    return { briefing: text };
+  });

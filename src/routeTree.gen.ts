@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as TasksRouteImport } from './routes/tasks'
 import { Route as SettingsRouteImport } from './routes/settings'
 import { Route as SavedRouteImport } from './routes/saved'
+import { Route as ResearchRouteImport } from './routes/research'
 import { Route as MeetingsRouteImport } from './routes/meetings'
 import { Route as HistoryRouteImport } from './routes/history'
 import { Route as EmailRouteImport } from './routes/email'
@@ -31,6 +32,11 @@ const SettingsRoute = SettingsRouteImport.update({
 const SavedRoute = SavedRouteImport.update({
   id: '/saved',
   path: '/saved',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ResearchRoute = ResearchRouteImport.update({
+  id: '/research',
+  path: '/research',
   getParentRoute: () => rootRouteImport,
 } as any)
 const MeetingsRoute = MeetingsRouteImport.update({
@@ -64,6 +70,7 @@ export interface FileRoutesByFullPath {
   '/email': typeof EmailRoute
   '/history': typeof HistoryRoute
   '/meetings': typeof MeetingsRoute
+  '/research': typeof ResearchRoute
   '/saved': typeof SavedRoute
   '/settings': typeof SettingsRoute
   '/tasks': typeof TasksRoute
@@ -74,6 +81,7 @@ export interface FileRoutesByTo {
   '/email': typeof EmailRoute
   '/history': typeof HistoryRoute
   '/meetings': typeof MeetingsRoute
+  '/research': typeof ResearchRoute
   '/saved': typeof SavedRoute
   '/settings': typeof SettingsRoute
   '/tasks': typeof TasksRoute
@@ -85,6 +93,7 @@ export interface FileRoutesById {
   '/email': typeof EmailRoute
   '/history': typeof HistoryRoute
   '/meetings': typeof MeetingsRoute
+  '/research': typeof ResearchRoute
   '/saved': typeof SavedRoute
   '/settings': typeof SettingsRoute
   '/tasks': typeof TasksRoute
@@ -97,6 +106,7 @@ export interface FileRouteTypes {
     | '/email'
     | '/history'
     | '/meetings'
+    | '/research'
     | '/saved'
     | '/settings'
     | '/tasks'
@@ -107,6 +117,7 @@ export interface FileRouteTypes {
     | '/email'
     | '/history'
     | '/meetings'
+    | '/research'
     | '/saved'
     | '/settings'
     | '/tasks'
@@ -117,6 +128,7 @@ export interface FileRouteTypes {
     | '/email'
     | '/history'
     | '/meetings'
+    | '/research'
     | '/saved'
     | '/settings'
     | '/tasks'
@@ -128,6 +140,7 @@ export interface RootRouteChildren {
   EmailRoute: typeof EmailRoute
   HistoryRoute: typeof HistoryRoute
   MeetingsRoute: typeof MeetingsRoute
+  ResearchRoute: typeof ResearchRoute
   SavedRoute: typeof SavedRoute
   SettingsRoute: typeof SettingsRoute
   TasksRoute: typeof TasksRoute
@@ -155,6 +168,13 @@ declare module '@tanstack/react-router' {
       path: '/saved'
       fullPath: '/saved'
       preLoaderRoute: typeof SavedRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/research': {
+      id: '/research'
+      path: '/research'
+      fullPath: '/research'
+      preLoaderRoute: typeof ResearchRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/meetings': {
@@ -200,6 +220,7 @@ const rootRouteChildren: RootRouteChildren = {
   EmailRoute: EmailRoute,
   HistoryRoute: HistoryRoute,
   MeetingsRoute: MeetingsRoute,
+  ResearchRoute: ResearchRoute,
   SavedRoute: SavedRoute,
   SettingsRoute: SettingsRoute,
   TasksRoute: TasksRoute,
